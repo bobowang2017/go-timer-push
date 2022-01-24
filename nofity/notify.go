@@ -1,6 +1,7 @@
 package nofity
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/kirinlabs/HttpRequest"
 	"go-timer-push/config"
@@ -103,6 +104,8 @@ func (p *PushPlus) Send(msg map[string]string) error {
 	req = HttpRequest.NewRequest().SetTimeout(3 * time.Second).SetHeaders(
 		map[string]string{"Content-Type": "application/json"},
 	)
+	tempMsg, _ := json.Marshal(body)
+	logger.Logger.Info(string(tempMsg))
 	if resp, err = req.JSON().Post(p.SendUrl, body); err != nil {
 		logger.Logger.Error(err)
 		return err
