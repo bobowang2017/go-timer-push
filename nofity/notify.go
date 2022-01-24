@@ -3,6 +3,7 @@ package nofity
 import (
 	"fmt"
 	"github.com/kirinlabs/HttpRequest"
+	"go-timer-push/config"
 	"go-timer-push/logger"
 	"net/http"
 	"time"
@@ -119,8 +120,8 @@ func (p *PushPlus) Send(msg map[string]string) error {
 func NewPushPlusClient() *PushPlus {
 	return &PushPlus{
 		ClientName:    "PushPlus",
-		SendUrl:       "http://pushplus.hxtrip.com/send",
-		LevelTwoToken: "4e519d615f0947239ff344832c700084",
-		LevelOneToken: "9af30949f1524e0992eb676d3207f213",
+		SendUrl:       config.Cfg.PushPlus.SendUrl,
+		LevelTwoToken: config.Cfg.NoticeUsers[1].PushPlusToken,
+		LevelOneToken: config.Cfg.NoticeUsers[0].PushPlusToken,
 	}
 }

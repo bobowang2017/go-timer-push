@@ -41,12 +41,12 @@ func NewJiraService() *JiraService {
 
 func (c *JiraService) GetJiraClient() (*jira.Client, error) {
 	tp := jira.BasicAuthTransport{
-		Username: config.Cfg.UserName,
-		Password: config.Cfg.Password,
+		Username: config.Cfg.JiraCfg.UserName,
+		Password: config.Cfg.JiraCfg.Password,
 	}
 	var err error
 	if jiraClient == nil {
-		jiraClient, err = jira.NewClient(tp.Client(), config.Cfg.JiraHostUrl)
+		jiraClient, err = jira.NewClient(tp.Client(), config.Cfg.JiraCfg.HostUrl)
 	}
 	if err != nil {
 		return nil, err
@@ -69,7 +69,7 @@ func (c *JiraService) Refresh() (res *UnSignedSupport, err error) {
 	if err != nil {
 		return nil, err
 	}
-	req, _ := jiraClient.NewRequest("GET", config.Cfg.Url, nil)
+	req, _ := jiraClient.NewRequest("GET", config.Cfg.JiraCfg.UnSupportUrl, nil)
 	resp, err := jiraClient.Do(req, nil)
 	respStr := c.respToStr(resp)
 	if err != nil {

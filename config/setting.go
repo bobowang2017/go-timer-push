@@ -1,24 +1,45 @@
 package config
 
 import (
-	"go-timer-push/logger"
 	"gopkg.in/yaml.v2"
 	"log"
 	"os"
 )
 
+type Server struct {
+	LogSavePath     string `yaml:"LogSavePath"`
+	LogMaxAge       string `yaml:"LogMaxAge"`
+	LogRotationTime string `yaml:"LogRotationTime"`
+	LogLevel        string `yaml:"LogLevel"`
+}
+
+type JiraCfg struct {
+	HostUrl        string `yaml:"HostUrl"`
+	UserName       string `yaml:"UserName"`
+	Password       string `yaml:"Password"`
+	UnSupportUrl   string `yaml:"UnSupportUrl"`
+	MyUnSupportUrl string `yaml:"MyUnSupportUrl"`
+}
+
+type NoticeUser struct {
+	Username      string `yaml:"Username"`
+	Password      string `yaml:"Password"`
+	PushPlusToken string `yaml:"PushPlusToken"`
+}
+
 type SettingConfig struct {
-	JiraHostUrl string `yaml:"JiraHostUrl"`
-	Url         string `yaml:"Url"`
-	UserName    string `yaml:"UserName"`
-	Password    string `yaml:"Password"`
+	Server   Server  `yaml:"Server"`
+	JiraCfg  JiraCfg `yaml:"JiraCfg"`
+	PushPlus struct {
+		SendUrl string `yaml:"SendUrl"`
+	} `yaml:"PushPlus"`
+	NoticeUsers []NoticeUser `yaml:"NoticeUsers"`
 }
 
 var Cfg = &SettingConfig{}
 
 func LoadConfig() {
-	logger.Logger.Info("重新加载配置")
-	var source = "./cfg.yml"
+	var source = "./cfg-dev.yml"
 	if f, err := os.Open(source); err != nil {
 		log.Fatalf("打开配置文件失败: %v", err)
 	} else {

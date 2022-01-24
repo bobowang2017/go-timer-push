@@ -5,6 +5,7 @@ import (
 	"github.com/EDDYCJY/go-gin-example/pkg/setting"
 	rotateLogs "github.com/lestrrat/go-file-rotatelogs"
 	log "github.com/sirupsen/logrus"
+	"go-timer-push/config"
 	"io"
 	"os"
 	"path/filepath"
@@ -37,7 +38,8 @@ func Setup() {
 	fileName := getLogFileName()
 
 	writer, _ := rotateLogs.New(
-		"%Y-%m-%d_%H-%M"+fileName,
+		config.Cfg.Server.LogSavePath+
+			"%Y-%m-%d_%H-%M"+fileName,
 		//rotateLogs.WithLinkName(logFile),
 		rotateLogs.WithMaxAge(1*24*time.Hour),
 		rotateLogs.WithRotationTime(1*time.Hour),
