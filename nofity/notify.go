@@ -67,10 +67,10 @@ type PushPlus struct {
 	Msg
 }
 
-func (p *PushPlus) GetMsgTemplate(levelToken string) (map[string]string, error) {
+func (p *PushPlus) GetMsgTemplate(level string) (map[string]string, error) {
 	useToken := p.LevelOneToken
 	content := ""
-	switch levelToken {
+	switch level {
 	case "levelA":
 		useToken = p.LevelOneToken
 		content = "请及时处理工单"
@@ -82,7 +82,7 @@ func (p *PushPlus) GetMsgTemplate(levelToken string) (map[string]string, error) 
 		"token":    useToken,
 		"title":    fmt.Sprintf("您有%d个工单待分配", len(p.Msg.MsgInfo)),
 		"content":  content,
-		"topic":    levelToken,
+		"topic":    "",
 		"template": "html",
 	}
 	return res, nil

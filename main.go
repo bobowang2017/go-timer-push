@@ -7,9 +7,7 @@ import (
 	"go-timer-push/logger"
 	"go-timer-push/nofity"
 	"go-timer-push/service"
-	"os"
-	"os/signal"
-	"syscall"
+	"net/http"
 )
 
 var UnSupportCache = map[string]int{}
@@ -65,15 +63,24 @@ func IntervalRefresh() {
 	msgClient.SendMessage()
 }
 
+func HealthHandler(w http.ResponseWriter, r *http.Request) {
+	_, _ = w.Write([]byte("I am ok"))
+}
+
 func main() {
 	config.LoadConfig()
 	logger.Setup()
 	logger.Logger.Info("程序启动")
-	IntervalRefresh()
+	//IntervalRefresh()
 	cronTimer := cron.New()
 	_, _ = cronTimer.AddFunc("*/2 * * * *", IntervalRefresh)
 	cronTimer.Start()
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, syscall.SIGINT, os.Interrupt, syscall.SIGTERM)
-	<-sigChan
+	//sigChan := make(chan os.Signal, 1)
+	//signal.Notify(sigChan, syscall.SIGINT, os.Interrupt, syscall.SIGTERM)
+	//<-sigChan
+	http.HandleFunc("/", HealthHandler)
+	if err := http.ListenAndServe(":8000", nil); err != nil {
+		logger.Logger.Error(err)
+		logger.Logger.Panic("系统服务启动异常")
+	}
 }
