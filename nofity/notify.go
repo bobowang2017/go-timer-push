@@ -73,7 +73,7 @@ func (p *PushPlus) GetMsgTemplate(level string) (map[string]string, error) {
 		useToken = config.Cfg.LevelOneNoticeUsers[0].PushPlusToken
 		content = "请及时处理工单"
 	case "levelB":
-		useToken = config.Cfg.LevelOneNoticeUsers[1].PushPlusToken
+		useToken = config.Cfg.LevelTwoNoticeUsers[1].PushPlusToken
 		content = "工单超时，请及时处理"
 	}
 	res := map[string]string{
