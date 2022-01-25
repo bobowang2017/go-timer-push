@@ -33,13 +33,25 @@ type SettingConfig struct {
 	PushPlus struct {
 		SendUrl string `yaml:"SendUrl"`
 	} `yaml:"PushPlus"`
-	NoticeUsers []NoticeUser `yaml:"NoticeUsers"`
+	LevelOneNoticeUsers []NoticeUser `yaml:"LevelOneNoticeUsers"`
+	LevelTwoNoticeUsers []NoticeUser `yaml:"LevelTwoNoticeUsers"`
 }
 
 var Cfg = &SettingConfig{}
 
 func LoadConfig() {
 	var source = "./cfg-dev.yml"
+	if f, err := os.Open(source); err != nil {
+		log.Fatalf("打开配置文件失败: %v", err)
+	} else {
+		if err := yaml.NewDecoder(f).Decode(Cfg); err != nil {
+			log.Fatalf("反序列化配置文件失败: %v", err)
+		}
+	}
+}
+
+func LoadTestConfig() {
+	var source = "../cfg-dev.yml"
 	if f, err := os.Open(source); err != nil {
 		log.Fatalf("打开配置文件失败: %v", err)
 	} else {

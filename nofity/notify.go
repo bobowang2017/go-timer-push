@@ -60,22 +60,20 @@ type PushPlusMsg struct {
 }
 
 type PushPlus struct {
-	ClientName    string
-	SendUrl       string
-	LevelOneToken string
-	LevelTwoToken string
+	ClientName string
+	SendUrl    string
 	Msg
 }
 
 func (p *PushPlus) GetMsgTemplate(level string) (map[string]string, error) {
-	useToken := p.LevelOneToken
+	useToken := config.Cfg.LevelOneNoticeUsers[0].PushPlusToken
 	content := ""
 	switch level {
 	case "levelA":
-		useToken = p.LevelOneToken
+		useToken = config.Cfg.LevelOneNoticeUsers[0].PushPlusToken
 		content = "请及时处理工单"
 	case "levelB":
-		useToken = p.LevelTwoToken
+		useToken = config.Cfg.LevelOneNoticeUsers[1].PushPlusToken
 		content = "工单超时，请及时处理"
 	}
 	res := map[string]string{
@@ -122,9 +120,7 @@ func (p *PushPlus) Send(msg map[string]string) error {
 
 func NewPushPlusClient() *PushPlus {
 	return &PushPlus{
-		ClientName:    "PushPlus",
-		SendUrl:       config.Cfg.PushPlus.SendUrl,
-		LevelTwoToken: config.Cfg.NoticeUsers[1].PushPlusToken,
-		LevelOneToken: config.Cfg.NoticeUsers[0].PushPlusToken,
+		ClientName: "PushPlus",
+		SendUrl:    config.Cfg.PushPlus.SendUrl,
 	}
 }

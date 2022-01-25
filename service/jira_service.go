@@ -5,6 +5,7 @@ import (
 	"github.com/andygrunwald/go-jira"
 	"go-timer-push/config"
 	"go-timer-push/logger"
+	"go-timer-push/utils/encrypt"
 	"io/ioutil"
 )
 
@@ -40,9 +41,12 @@ func NewJiraService() *JiraService {
 }
 
 func (c *JiraService) GetJiraClient() (*jira.Client, error) {
+	aesClient := encrypt.NewAesCryptor()
+	username, _ := aesClient.AESBase64Decrypt(config.Cfg.JiraCfg.UserName)
+	password, _ := aesClient.AESBase64Decrypt(config.Cfg.JiraCfg.Password)
 	tp := jira.BasicAuthTransport{
-		Username: config.Cfg.JiraCfg.UserName,
-		Password: config.Cfg.JiraCfg.Password,
+		Username: username,
+		Password: password,
 	}
 	var err error
 	if jiraClient == nil {

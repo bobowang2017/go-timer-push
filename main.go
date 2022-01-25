@@ -71,7 +71,7 @@ func main() {
 	config.LoadConfig()
 	logger.Setup()
 	logger.Logger.Info("程序启动")
-	//IntervalRefresh()
+	IntervalRefresh()
 	cronTimer := cron.New()
 	_, _ = cronTimer.AddFunc("*/2 * * * *", IntervalRefresh)
 	cronTimer.Start()
