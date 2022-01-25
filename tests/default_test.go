@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-timer-push/config"
 	"go-timer-push/logger"
+	"go-timer-push/utils"
 	"go-timer-push/utils/encrypt"
 	"testing"
 )
@@ -27,4 +28,8 @@ func TestAESBase64Decrypt(t *testing.T) {
 	originData := "xZ7K5bvPMfiV0zQdxIvEdw"
 	res, _ := aesClient.AESBase64Decrypt(originData)
 	fmt.Println(res)
+}
+
+func TestHello(t *testing.T) {
+	fmt.Println(utils.WeekCountNow())
 }
